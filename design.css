@@ -14,7 +14,7 @@
 }
 
 body {
-    font-size: 2em;
+    font-size: 3em;
 }
 
 #ns-schwabacher {
@@ -25,6 +25,7 @@ body {
 #ns-kurrent {
     font-family: kurrentTxt;
     border: none;
+    font-size: 150%;
 }
 
 #ns-kurrent::first-letter {

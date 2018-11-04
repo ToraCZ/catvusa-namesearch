@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Name Search Design</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="./design.css">
+</head>
+<script>
+    function updateText() {
+        document.getElementById('ns-kurrent').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
+        document.getElementById('ns-schwabacher').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
+    }
+
+    function translateName(surname) {
+        var translations = [];
+
+
+    }
+
+    function updateFemaleVariant(surname) {
+        var surnames = [];
+        //I
+        //I.A
+        //I.A.1
+        if (surname.search(/[^e][bcčdďfghjklmnňpqrřsštťvwxzž]$/) != -1) {
+            surnames.push(surname + "ová");
+        }
+        //I.A.2
+        else if (surname.search(/[e][bcčdďfghjklmnňpqrřsštťvwxzž]$/) != -1) {
+            //I.A.2.a
+            surnames.push(surname + "ová");
+            //I.A.2.ba
+            if (surname.search(/ec$/) != -1) {
+                surnames.push(surname.replace(/ec$/, "cová"));
+            }
+            //I.A.2.bb
+            if (surname.search(/ek$/) != -1) {
+                surnames.push(surname.replace(/ek$/, "ková"));
+            }
+            //I.A.2.bc
+            if (surname.search(/eš$/) != -1) {
+                surnames.push(surname.replace(/eš$/, "šová"));
+            }
+            //I.A.2.bd
+            if (surname.search(/el$/) != -1) {
+                surnames.push(surname.replace(/el$/, "lová"));
+            }
+            if (surname.search(/ev$/) != -1) {
+                surnames.push(surname.replace(/ev$/, "vová"));
+            }
+        }
+        //I.B
+        else if (surname.search(/[aeěiyou]$/)) {
+            surnames.push(surname.replace(/o*.$/, "ová"));
+        }
+        //II
+        //II.1
+
+        var select = document.getElementById("ns-femaleVariant");
+        select.options.length = 0;
+        for (i = 0; i < surnames.length; i++) {
+            var option = document.createElement("option");
+            option.text = surnames[i];
+            select.add(option);
+        }
+
+    }
+
+</script>
+
+<body>
+
+</body>
+<div class="container">
+    <div class="row">
+        <h1 class="col-12">Name Search</h1>
+        <hr>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <label for="ns-engSurname">First Name:</label>
+            <input type="text" id="ns-firstName" onkeyup="updateText();">
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="ns-schwabacher">Surname:</label>
+            <input type="text" id="ns-surname" onkeyup="updateText();">
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-12 col-md-6 ">
+            <label for="ns-schwabacher">Schwabacher:</label>
+            <input type="text " id="ns-schwabacher" readonly>
+        </div>
+        <div class="col-12 col-md-6 ">
+            <label for="ns-kurrent ">Kurrent:</label>
+            <input type="text " id="ns-kurrent" readonly>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12 col-md-6">
+            <label for="ns-translation ">Czech translation:</label>
+            <select id="ns-translation " onchange="updateFemaleVariant(this.value);">
+                <!-- test options !-->
+                <option>Havlas</option>
+                <option>Chmel</option>
+                <option>Kadlec</option>
+                <option>Havránek</option>
+                <option>Tomeš</option>
+                <option>Lev</option>
+                <option>Havel</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="ns-femaleVariant">Female Surname:</label>
+            <select id="ns-femaleVariant">
+            <option disabled>Select a translation</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+</html>
