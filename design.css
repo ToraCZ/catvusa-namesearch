@@ -1,0 +1,32 @@
+@font-face {
+    font-family: schwabacher;
+    src: url(fonts/Schwabacher.ttf);
+}
+
+@font-face {
+    font-family: kurrentStart;
+    src: url(fonts/KurStart.ttf);
+}
+
+@font-face {
+    font-family: kurrentTxt;
+    src: url(fonts/KurTxt.ttf);
+}
+
+body {
+    font-size: 2em;
+}
+
+#ns-schwabacher {
+    font-family: schwabacher;
+    border: none;
+}
+
+#ns-kurrent {
+    font-family: kurrentTxt;
+    border: none;
+}
+
+#ns-kurrent::first-letter {
+    font-family: kurrentStart;
+}
