@@ -3,6 +3,9 @@
 #characterTable {
     text-align: center;
 }
+body{
+    font-size: 2em;
+}
 
 #gt-typer {
     width: 100%;
