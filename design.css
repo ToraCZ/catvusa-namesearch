@@ -1,33 +1,9 @@
-@font-face {
-    font-family: schwabacher;
-    src: url(fonts/Schwabacher.ttf);
+@import "./fonts/fonts.css";
+
+#characterTable {
+    text-align: center;
 }
 
-@font-face {
-    font-family: kurrentStart;
-    src: url(fonts/KurStart.ttf);
-}
-
-@font-face {
-    font-family: kurrentTxt;
-    src: url(fonts/KurTxt.ttf);
-}
-
-body {
-    font-size: 3em;
-}
-
-#ns-schwabacher {
-    font-family: schwabacher;
-    border: none;
-}
-
-#ns-kurrent {
-    font-family: kurrentTxt;
-    border: none;
-    font-size: 150%;
-}
-
-#ns-kurrent::first-letter {
-    font-family: kurrentStart;
+#gt-typer {
+    width: 100%;
 }

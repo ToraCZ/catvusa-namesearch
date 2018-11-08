@@ -8,6 +8,9 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="./design.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
 </head>
 <script>
     function updateText() {
@@ -17,9 +20,26 @@
 
     function translateName(surname) {
         var translations = [];
-
-
     }
+
+    function addLetter(letter, selector) {
+       $(selector).val($(selector).val()+letter);
+    }
+    
+    
+
+    function changeFont(fontType, selector) {
+        $(selector).css("fontFamily", fontType);
+    }
+
+    function changeCase(caseType, selector) {
+        $(selector).css("textTransform", caseType);
+    }
+    
+    function copyInput(sSelector,tSelector){
+        $(tSelector).val($(sSelector).val());
+    }
+    
 
     function updateFemaleVariant(surname) {
         var surnames = [];
@@ -77,10 +97,10 @@
 </body>
 <div class="container">
     <div class="row">
-        <h1 class="col-12">Name Search</h1>
-        <hr>
+        <h1 class="col-12">Genealogy Tools</h1>
     </div>
-    <div class="row">
+    <hr>
+    <!--    <div class="row">
         <div class="col-12 col-md-6">
             <label for="ns-engSurname">First Name:</label>
             <input type="text" id="ns-firstName" onkeyup="updateText();">
@@ -104,7 +124,7 @@
         <div class="col-12 col-md-6">
             <label for="ns-translation ">Czech translation:</label>
             <select id="ns-translation " onchange="updateFemaleVariant(this.value);">
-                <!-- test options !-->
+                 test options !
                 <option>Havlas</option>
                 <option>Chmel</option>
                 <option>Kadlec</option>
@@ -121,6 +141,224 @@
             </select>
         </div>
     </div>
+    <hr>
+    <h2>Schwabacher typing</h2>
+    <div class="row">
+        <input type="text" id="typingBox" class="swab">
+        <div class="col"><button class="swab" onclick="addLetter(this.innerText);">A</button><br>A</div>
+        <div class="col"><button class="swab" onclick="addLetter(this.innerText);">B</button><br>B</div>
+        <div class="col"><button class="swab" onclick="addLetter(this.innerText);">C</button><br>C</div>
+        <div class="col"><button class="swab" onclick="addLetter(this.innerText);">D</button><br>D</div>
+
+    </div>-->
+    <h2>Old German Typing</h2>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" id="gt-typer">
+        </div>
+        <div class="col-4 col-md-2">
+            <select id="gt-fontSelect" onchange="changeFont(this.value, '#gt-typer');">
+                <option value="inherit" selected="selected">Latin</option>
+                <option value=" amptmann">Amptmann</option>
+                <option value="contgen">Contgen</option>
+                <option value="friedolin">Friedolin</option>
+                <option value="greifswalder">Greifswalder</option>
+                <option value="kurrent">Kurrent</option>
+                <option value="leipzig">Leipzig</option>
+                <option value="rudelskopf">Rudelskopf</option>
+                <option value="schwabacher">Schwabacher</option>
+            </select>
+        </div>
+        <div class="col-8 col-md-4">
+            <button onclick="addLetter('ä','#gt-typer')">ä</button> <button onclick="addLetter('Ä','#gt-typer')">Ä</button> <button onclick="addLetter('ö','#gt-typer')">ö</button> <button onclick="addLetter('Ö','#gt-typer')">Ö</button> <button onclick="addLetter('ü','#gt-typer')">ü</button> <button onclick="addLetter('Ü','#gt-typer')">Ü</button> <button onclick="addLetter('ß','#gt-typer')">ß</button>         </div>
+    </div>
+    <h2>Character table</h2>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <table id="characterTable" class="table table-striped">
+                
+                        <tr>
+                        <td>a</td>
+                        <td class='gt-gerFont'>a</td>
+                        </tr>
+                        <tr>
+                        <td>ä</td>
+                        <td class='gt-gerFont'>ä</td>
+                        </tr>
+                        <tr>
+                        <td>b</td>
+                        <td class='gt-gerFont'>b</td>
+                        </tr>
+                        <tr>
+                        <td>c</td>
+                        <td class='gt-gerFont'>c</td>
+                        </tr>
+                        <tr>
+                        <td>d</td>
+                        <td class='gt-gerFont'>d</td>
+                        </tr>
+                        <tr>
+                        <td>e</td>
+                        <td class='gt-gerFont'>e</td>
+                        </tr>
+                        <tr>
+                        <td>f</td>
+                        <td class='gt-gerFont'>f</td>
+                        </tr>
+                        <tr>
+                        <td>g</td>
+                        <td class='gt-gerFont'>g</td>
+                        </tr>
+                        <tr>
+                        <td>h</td>
+                        <td class='gt-gerFont'>h</td>
+                        </tr>
+                        <tr>
+                        <td>i</td>
+                        <td class='gt-gerFont'>i</td>
+                        </tr>
+                        <tr>
+                        <td>j</td>
+                        <td class='gt-gerFont'>j</td>
+                        </tr>
+                        <tr>
+                        <td>k</td>
+                        <td class='gt-gerFont'>k</td>
+                        </tr>
+                        <tr>
+                        <td>l</td>
+                        <td class='gt-gerFont'>l</td>
+                        </tr>
+                        <tr>
+                        <td>m</td>
+                        <td class='gt-gerFont'>m</td>
+                        </tr>
+                        <tr>
+                        <td>n</td>
+                        <td class='gt-gerFont'>n</td>
+                        </tr>
+                        <tr>
+                        <td>o</td>
+                        <td class='gt-gerFont'>o</td>
+                        </tr>
+                        <tr>
+                        <td>ö</td>
+                        <td class='gt-gerFont'>ö</td>
+                        </tr>
+                        <tr>
+                        <td>p</td>
+                        <td class='gt-gerFont'>p</td>
+                        </tr>
+                        <tr>
+                        <td>q</td>
+                        <td class='gt-gerFont'>q</td>
+                        </tr>
+                        <tr>
+                        <td>r</td>
+                        <td class='gt-gerFont'>r</td>
+                        </tr>
+                        <tr>
+                        <td>s</td>
+                        <td class='gt-gerFont'>s</td>
+                        </tr>
+                        <tr>
+                        <td>ß</td>
+                        <td class='gt-gerFont'>ß</td>
+                        </tr>
+                        <tr>
+                        <td>t</td>
+                        <td class='gt-gerFont'>t</td>
+                        </tr>
+                        <tr>
+                        <td>u</td>
+                        <td class='gt-gerFont'>u</td>
+                        </tr>
+                        <tr>
+                        <td>ü</td>
+                        <td class='gt-gerFont'>ü</td>
+                        </tr>
+                        <tr>
+                        <td>v</td>
+                        <td class='gt-gerFont'>v</td>
+                        </tr>
+                        <tr>
+                        <td>w</td>
+                        <td class='gt-gerFont'>w</td>
+                        </tr>
+                        <tr>
+                        <td>x</td>
+                        <td class='gt-gerFont'>x</td>
+                        </tr>
+                        <tr>
+                        <td>y</td>
+                        <td class='gt-gerFont'>y</td>
+                        </tr>
+                        <tr>
+                        <td>z</td>
+                        <td class='gt-gerFont'>z</td>
+                        </tr>
+                        <tr>
+                        <td>0</td>
+                        <td class='gt-gerFont'>0</td>
+                        </tr>
+                        <tr>
+                        <td>1</td>
+                        <td class='gt-gerFont'>1</td>
+                        </tr>
+                        <tr>
+                        <td>2</td>
+                        <td class='gt-gerFont'>2</td>
+                        </tr>
+                        <tr>
+                        <td>3</td>
+                        <td class='gt-gerFont'>3</td>
+                        </tr>
+                        <tr>
+                        <td>4</td>
+                        <td class='gt-gerFont'>4</td>
+                        </tr>
+                        <tr>
+                        <td>5</td>
+                        <td class='gt-gerFont'>5</td>
+                        </tr>
+                        <tr>
+                        <td>6</td>
+                        <td class='gt-gerFont'>6</td>
+                        </tr>
+                        <tr>
+                        <td>7</td>
+                        <td class='gt-gerFont'>7</td>
+                        </tr>
+                        <tr>
+                        <td>8</td>
+                        <td class='gt-gerFont'>8</td>
+                        </tr>
+                        <tr>
+                        <td>9</td>
+                        <td class='gt-gerFont'>9</td>
+                        </tr>            </table>
+        </div>
+        <div class="col-12 col-md-4">
+            <select id="gt-fontSelect" onchange="changeFont(this.value, '.gt-gerFont');">
+                <option value="" selected="selected" disabled>Select a font</option>
+                <option value=" amptmann">Amptmann</option>
+                <option value="contgen">Contgen</option>
+                <option value="friedolin">Friedolin</option>
+                <option value="greifswalder">Greifswalder</option>
+                <option value="kurrent">Kurrent</option>
+                <option value="leipzig">Leipzig</option>
+                <option value="rudelskopf">Rudelskopf</option>
+                <option value="schwabacher">Schwabacher</option>
+            </select>
+            <select id="gt-caseSelect" onchange="changeCase(this.value, '#characterTable');">
+                <option value="lowercase">Lowercase</option>
+                <option value="uppercase">Uppercase</option>
+            </select>
+        </div>
+    </div>
 </div>
+
 
 </html>
