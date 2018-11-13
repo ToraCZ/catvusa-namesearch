@@ -13,6 +13,9 @@
 
 </head>
 <script>
+    var rules = [];
+    var results = [];
+    rules.push(["A","a"]);rules.push(["A","á"]);rules.push(["AA","á"]);rules.push(["B","b"]);rules.push(["C","c"]);rules.push(["C","č"]);rules.push(["CZ","č"]);rules.push(["CH","č"]);rules.push(["C","k"]);rules.push(["D","d"]);rules.push(["E","e"]);rules.push(["E","é"]);rules.push(["E","ě"]);rules.push(["EW","ů"]);rules.push(["EW","ú"]);rules.push(["EE","ý"]);rules.push(["EE","í"]);rules.push(["E","I"]);rules.push(["EI","aj"]);rules.push(["F","f"]);rules.push(["F","v"]);rules.push(["G","g"]);rules.push(["H","h"]);rules.push(["H","ch"]);rules.push(["I","i"]);rules.push(["I","í"]);rules.push(["IE","ě"]);rules.push(["IE","ý"]);rules.push(["J","j"]);rules.push(["K","k"]);rules.push(["L","l"]);rules.push(["M","m"]);rules.push(["N","n"]);rules.push(["N","ň"]);rules.push(["O","o"]);rules.push(["O","ó"]);rules.push(["OO","ú"]);rules.push(["OO","ů"]);rules.push(["P","p"]);rules.push(["Q","q"]);rules.push(["Q","kv"]);rules.push(["R","r"]);rules.push(["R","ř"]);rules.push(["RZ","ř"]);rules.push(["S","s"]);rules.push(["S","š"]);rules.push(["SCH","š"]);rules.push(["SH","š"]);rules.push(["S","z"]);rules.push(["SS","z"]);rules.push(["T","t"]);rules.push(["TCH","č"]);rules.push(["T","ť"]);rules.push(["U","u"]);rules.push(["U","ú"]);rules.push(["U","ů"]);rules.push(["V","v"]);rules.push(["V","f"]);rules.push(["W","w"]);rules.push(["W","v"]);rules.push(["X","x"]);rules.push(["X","ks"]);rules.push(["Y","y"]);rules.push(["Y","j"]);rules.push(["Y","ý"]);rules.push(["Z","z"]);rules.push(["Z","s"]);rules.push(["Z","ž"]);rules.push(["ß","SS"]);rules.push(["Ü","y"]);rules.push(["Ü","i"]);    
     function updateText() {
         document.getElementById('ns-kurrent').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
         document.getElementById('ns-schwabacher').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
@@ -26,6 +29,35 @@
        $(selector).val($(selector).val()+letter);
     }
     
+    function transcribeName(name){
+        var results = transcribeRecurs(name.toUpperCase(),[]);
+        for(var i = 0; i < results.length; i++){
+            console.log(results[i]);
+        }
+    }
+    
+    function transcribeRecurs(string, results){
+        //string is already fully transcribed
+        if(string.toLowerCase() == string){
+            if(results.indexOf(string) == -1){
+                results.push(string);
+            }
+            return results;
+        }
+        //try all rules
+        for(var i = 0; i < rules.length; i++){
+            var from = rules[i][0];
+            var to = rules[i][1];
+            var str = string;
+            if(str.includes(from)){
+                str=str.replace(from,to);
+                results = transcribeRecurs(str,results);
+            }
+        }
+        return results;
+    }
+    
+    //transcribeName("Vaschicek");
     
 
     function changeFont(fontType, selector) {
@@ -171,7 +203,8 @@
             </select>
         </div>
         <div class="col-8 col-md-4">
-            <button onclick="addLetter('ä','#gt-typer')">ä</button> <button onclick="addLetter('Ä','#gt-typer')">Ä</button> <button onclick="addLetter('ö','#gt-typer')">ö</button> <button onclick="addLetter('Ö','#gt-typer')">Ö</button> <button onclick="addLetter('ü','#gt-typer')">ü</button> <button onclick="addLetter('Ü','#gt-typer')">Ü</button> <button onclick="addLetter('ß','#gt-typer')">ß</button>         </div>
+            <!--  TODO redo in php? -->
+            <button onclick="addLetter('ä','#gt-typer')">ä</button> <button onclick="addLetter('Ä','#gt-typer')">Ä</button> <button onclick="addLetter('ö','#gt-typer')">ö</button> <button onclick="addLetter('Ö','#gt-typer')">Ö</button> <button onclick="addLetter('ü','#gt-typer')">ü</button> <button onclick="addLetter('Ü','#gt-typer')">Ü</button> <button onclick="addLetter('ß','#gt-typer')">ß</button> </div>
     </div>
     <h2>Character table</h2>
     <hr>
@@ -179,166 +212,156 @@
         <div class="col-12 col-md-8">
             <table id="characterTable" class="table table-striped">
                 
-                        <tr>
+                    <tr>
                         <td>a</td>
                         <td class='gt-gerFont'>a</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>ä</td>
                         <td class='gt-gerFont'>ä</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>b</td>
                         <td class='gt-gerFont'>b</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>c</td>
                         <td class='gt-gerFont'>c</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>d</td>
                         <td class='gt-gerFont'>d</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>e</td>
                         <td class='gt-gerFont'>e</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>f</td>
                         <td class='gt-gerFont'>f</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>g</td>
                         <td class='gt-gerFont'>g</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>h</td>
                         <td class='gt-gerFont'>h</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>i</td>
                         <td class='gt-gerFont'>i</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>j</td>
                         <td class='gt-gerFont'>j</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>k</td>
                         <td class='gt-gerFont'>k</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>l</td>
                         <td class='gt-gerFont'>l</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>m</td>
                         <td class='gt-gerFont'>m</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>n</td>
                         <td class='gt-gerFont'>n</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>o</td>
                         <td class='gt-gerFont'>o</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>ö</td>
                         <td class='gt-gerFont'>ö</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>p</td>
                         <td class='gt-gerFont'>p</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>q</td>
                         <td class='gt-gerFont'>q</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>r</td>
                         <td class='gt-gerFont'>r</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>s</td>
                         <td class='gt-gerFont'>s</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>ß</td>
                         <td class='gt-gerFont'>ß</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>t</td>
                         <td class='gt-gerFont'>t</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>u</td>
                         <td class='gt-gerFont'>u</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>ü</td>
                         <td class='gt-gerFont'>ü</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>v</td>
                         <td class='gt-gerFont'>v</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>w</td>
                         <td class='gt-gerFont'>w</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>x</td>
                         <td class='gt-gerFont'>x</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>y</td>
                         <td class='gt-gerFont'>y</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    
+                    <tr>
                         <td>z</td>
                         <td class='gt-gerFont'>z</td>
-                        </tr>
-                        <tr>
-                        <td>0</td>
-                        <td class='gt-gerFont'>0</td>
-                        </tr>
-                        <tr>
-                        <td>1</td>
-                        <td class='gt-gerFont'>1</td>
-                        </tr>
-                        <tr>
-                        <td>2</td>
-                        <td class='gt-gerFont'>2</td>
-                        </tr>
-                        <tr>
-                        <td>3</td>
-                        <td class='gt-gerFont'>3</td>
-                        </tr>
-                        <tr>
-                        <td>4</td>
-                        <td class='gt-gerFont'>4</td>
-                        </tr>
-                        <tr>
-                        <td>5</td>
-                        <td class='gt-gerFont'>5</td>
-                        </tr>
-                        <tr>
-                        <td>6</td>
-                        <td class='gt-gerFont'>6</td>
-                        </tr>
-                        <tr>
-                        <td>7</td>
-                        <td class='gt-gerFont'>7</td>
-                        </tr>
-                        <tr>
-                        <td>8</td>
-                        <td class='gt-gerFont'>8</td>
-                        </tr>
-                        <tr>
-                        <td>9</td>
-                        <td class='gt-gerFont'>9</td>
-                        </tr>            </table>
+                    </tr>
+                                </table>
         </div>
         <div class="col-12 col-md-4">
             <select id="gt-fontSelect" onchange="changeFont(this.value, '.gt-gerFont');">
@@ -359,6 +382,5 @@
         </div>
     </div>
 </div>
-
 
 </html>
