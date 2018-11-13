@@ -68,6 +68,8 @@ SCH>š
 SH>š
 S>z
 SS>z
+SS>š
+SS>s
 ### T ###
 T>t
 TCH>č
