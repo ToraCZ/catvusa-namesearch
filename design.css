@@ -11,3 +11,11 @@ body {
 #gt-typer {
     width: 100%;
 }
+
+input[type="text"] {
+    width: 100%;
+}
+
+input[type="select"] {
+    width: 100%;
+}

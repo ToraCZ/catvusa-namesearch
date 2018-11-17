@@ -13,9 +13,12 @@
 
 </head>
 <script>
-    var rules = [];
+    var rulesD = [];
+    var rulesP = [];
     var results = [];
-    rules.push(["A","a"]);rules.push(["A","á"]);rules.push(["AA","á"]);rules.push(["B","b"]);rules.push(["C","c"]);rules.push(["C","č"]);rules.push(["CZ","č"]);rules.push(["CH","č"]);rules.push(["C","k"]);rules.push(["D","d"]);rules.push(["E","e"]);rules.push(["E","é"]);rules.push(["E","ě"]);rules.push(["EW","ů"]);rules.push(["EW","ú"]);rules.push(["EE","ý"]);rules.push(["EE","í"]);rules.push(["E","I"]);rules.push(["EI","aj"]);rules.push(["F","f"]);rules.push(["F","v"]);rules.push(["G","g"]);rules.push(["H","h"]);rules.push(["H","ch"]);rules.push(["I","i"]);rules.push(["I","í"]);rules.push(["IE","ě"]);rules.push(["IE","ý"]);rules.push(["J","j"]);rules.push(["K","k"]);rules.push(["L","l"]);rules.push(["M","m"]);rules.push(["N","n"]);rules.push(["N","ň"]);rules.push(["O","o"]);rules.push(["O","ó"]);rules.push(["OO","ú"]);rules.push(["OO","ů"]);rules.push(["P","p"]);rules.push(["Q","q"]);rules.push(["Q","kv"]);rules.push(["R","r"]);rules.push(["R","ř"]);rules.push(["RZ","ř"]);rules.push(["S","s"]);rules.push(["S","š"]);rules.push(["SCH","š"]);rules.push(["SH","š"]);rules.push(["S","z"]);rules.push(["SS","z"]);rules.push(["T","t"]);rules.push(["TCH","č"]);rules.push(["T","ť"]);rules.push(["U","u"]);rules.push(["U","ú"]);rules.push(["U","ů"]);rules.push(["V","v"]);rules.push(["V","f"]);rules.push(["W","w"]);rules.push(["W","v"]);rules.push(["X","x"]);rules.push(["X","ks"]);rules.push(["Y","y"]);rules.push(["Y","j"]);rules.push(["Y","ý"]);rules.push(["Z","z"]);rules.push(["Z","s"]);rules.push(["Z","ž"]);rules.push(["ß","SS"]);rules.push(["Ü","y"]);rules.push(["Ü","i"]);    
+    
+    rulesD.push(["A","á"]);rulesD.push(["C","č"]);rulesD.push(["D","ď"]);rulesD.push(["E","é"]);rulesD.push(["E","ě"]);rulesD.push(["I","í"]);rulesD.push(["N","ň"]);rulesD.push(["O","ó"]);rulesD.push(["R","ř"]);rulesD.push(["S","š"]);rulesD.push(["T","ť"]);rulesD.push(["U","ú"]);rulesD.push(["U","ů"]);rulesD.push(["Z","ž"]);rulesD.push(["SCH","š"]);rulesD.push(["SH","š"]);rulesD.push(["CH","č"]);rulesD.push(["TCH","č"]);rulesD.push(["CZ","č"]);rulesD.push(["RZ","ř"]);rulesP.push(["W","v"]);rulesP.push(["F","v"]);rulesP.push(["Y","j"]);rulesP.push(["IE","ě"]);rulesP.push(["E","I"]);rulesP.push(["V","f"]);rulesP.push(["H","ch"]);rulesP.push(["Z","s"]);rulesP.push(["IE","ý"]);rulesP.push(["EI","aj"]);rulesP.push(["S","z"]);rulesP.push(["SS","z"]);rulesP.push(["Q","kv"]);rulesP.push(["X","ks"]);
+    
     function updateText() {
         document.getElementById('ns-kurrent').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
         document.getElementById('ns-schwabacher').value = document.getElementById('ns-firstName').value + " " + document.getElementById('ns-surname').value;
@@ -29,32 +32,65 @@
        $(selector).val($(selector).val()+letter);
     }
     
-    function transcribeName(name){
-        var results = transcribeRecurs(name.toUpperCase(),[]);
+    function transcribeName(name, selector, includeD, includeP){
+        $(selector).html("<option disabled selected hidden>Loading...</option>");
+        results = [];
+        var t0 = performance.now();
+        transcribeRecurs(name.toUpperCase(),includeD, includeP);
+        var t1 = performance.now();
+        console.log("Took " + (t1 - t0) + " milliseconds.");
+        //TODO remove surnames not in DB
+        $(selector).html("");
         for(var i = 0; i < results.length; i++){
-            console.log(results[i]);
+             $(selector).append("<option value='"+results[i]+"'>"+results[i]+"</option>");
         }
+        
+
     }
-    
-    function transcribeRecurs(string, results){
+    /*
+    function transcribeRecurs(string){
         //string is already fully transcribed
         if(string.toLowerCase() == string){
             if(results.indexOf(string) == -1){
                 results.push(string);
             }
-            return results;
+            return;
         }
         //try all rules
         for(var i = 0; i < rules.length; i++){
             var from = rules[i][0];
             var to = rules[i][1];
-            var str = string;
-            if(str.includes(from)){
-                str=str.replace(from,to);
-                results = transcribeRecurs(str,results);
+            if(string.includes(from)){
+                transcribeRecurs(string.replace(from,to),results);
             }
         }
-        return results;
+    }
+    */
+    function transcribeRecurs(string, includeD, includeP){
+        if(results.indexOf(string.toLowerCase()) == -1){
+                results.push(string.toLowerCase());
+        }
+        //try all diacritics rules
+        if(includeD){
+            for(var i = 0; i < rulesD.length; i++){
+                var from = rulesD[i][0];
+                var to = rulesD[i][1];
+                if(string.includes(from)){
+                    transcribeRecurs(string.replace(from,to), includeD, includeP);
+                }
+            }
+        }
+        //try all pronounciation rules
+        if(includeP){
+            for(var i = 0; i < rulesP.length; i++){
+                var from = rulesP[i][0];
+                var to = rulesP[i][1];
+                if(string.includes(from)){
+                    transcribeRecurs(string.replace(from,to), includeD, includeP);
+                }
+            }
+        }
+
     }
     
     //transcribeName("Vaschicek");
@@ -73,7 +109,7 @@
     }
     
 
-    function updateFemaleVariant(surname) {
+    function updateFemaleVariant(surname, selector) {
         var surnames = [];
         //I
         //I.A
@@ -112,12 +148,11 @@
         //II
         //II.1
 
-        var select = document.getElementById("ns-femaleVariant");
-        select.options.length = 0;
+        
+        //TODO check names in database
+        $(selector).html("");
         for (i = 0; i < surnames.length; i++) {
-            var option = document.createElement("option");
-            option.text = surnames[i];
-            select.add(option);
+            $(selector).append("<option value='"+surnames[i]+"'>"+surnames[i]+"</option>");
         }
 
     }
@@ -125,14 +160,12 @@
 </script>
 
 <body>
-
-</body>
-<div class="container">
-    <div class="row">
-        <h1 class="col-12">Genealogy Tools</h1>
-    </div>
-    <hr>
-    <!--    <div class="row">
+        <div class="container">
+        <div class="row">
+            <h1 class="col-12">Genealogy Tools</h1>
+        </div>
+        <hr>
+        <!--    <div class="row">
         <div class="col-12 col-md-6">
             <label for="ns-engSurname">First Name:</label>
             <input type="text" id="ns-firstName" onkeyup="updateText();">
@@ -183,35 +216,65 @@
         <div class="col"><button class="swab" onclick="addLetter(this.innerText);">D</button><br>D</div>
 
     </div>-->
-    <h2>Old German Typing</h2>
-    <hr>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <input type="text" id="gt-typer">
+        <br>
+        <h2>Name Transcription</h2>
+        <hr>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <input type="text" id="gt-nameOrig" class="w-75">
+            </div>
+            <div class="col-3 col-md-2">
+                <input type="checkbox" id="gt-ruleD" checked>
+                <label for="gt-ruleD">Diacritics</label>
+                <br>
+                <input type="checkbox" id="gt-ruleP">
+                <label for="gt-ruleP">Pronounciation</label>
+            </div>
+            <div class="col-3 col-md-1">
+                <button onclick="transcribeName($('#gt-nameOrig').val(), '#gt-nameCzech', $('#gt-ruleD').prop('checked'), $('#gt-ruleP').prop('checked'));">></button>
+            </div>
+            <div class=" col-6 col-md-3">
+                <select id="gt-nameCzech" class="w-100" onchange="updateFemaleVariant(this.value,'#gt-nameCzechF');" required>
+                    <option disabled selected hidden>Please enter a name...</option>
+                </select>
+            </div>
+            <div class=" col-6 col-md-3">
+                <select id="gt-nameCzechF" class="w-100" required>
+                    <option disabled selected hidden>Please select a male name...</option>
+                </select>
+            </div>
         </div>
-        <div class="col-4 col-md-2">
-            <select id="gt-fontSelect" onchange="changeFont(this.value, '#gt-typer');">
-                <option value="inherit" selected="selected">Latin</option>
-                <option value=" amptmann">Amptmann</option>
-                <option value="contgen">Contgen</option>
-                <option value="friedolin">Friedolin</option>
-                <option value="greifswalder">Greifswalder</option>
-                <option value="kurrent">Kurrent</option>
-                <option value="leipzig">Leipzig</option>
-                <option value="rudelskopf">Rudelskopf</option>
-                <option value="schwabacher">Schwabacher</option>
-            </select>
+        <br>
+        <h2>Old German Typing</h2>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <input type="text" id="gt-typer">
+            </div>
+            <div class="col-4 col-md-2">
+                <select id="gt-fontSelect" onchange="changeFont(this.value, '#gt-typer');">
+                    <option value="inherit" selected="selected">Latin</option>
+                    <option value=" amptmann">Amptmann</option>
+                    <option value="contgen">Contgen</option>
+                    <option value="friedolin">Friedolin</option>
+                    <option value="greifswalder">Greifswalder</option>
+                    <option value="kurrent">Kurrent</option>
+                    <option value="leipzig">Leipzig</option>
+                    <option value="rudelskopf">Rudelskopf</option>
+                    <option value="schwabacher">Schwabacher</option>
+                </select>
+            </div>
+            <div class="col-8 col-md-4">
+                <!--  TODO redo in php? -->
+                <button onclick="addLetter('ä','#gt-typer')">ä</button> <button onclick="addLetter('Ä','#gt-typer')">Ä</button> <button onclick="addLetter('ö','#gt-typer')">ö</button> <button onclick="addLetter('Ö','#gt-typer')">Ö</button> <button onclick="addLetter('ü','#gt-typer')">ü</button> <button onclick="addLetter('Ü','#gt-typer')">Ü</button> <button onclick="addLetter('ß','#gt-typer')">ß</button> </div>
         </div>
-        <div class="col-8 col-md-4">
-            <!--  TODO redo in php? -->
-            <button onclick="addLetter('ä','#gt-typer')">ä</button> <button onclick="addLetter('Ä','#gt-typer')">Ä</button> <button onclick="addLetter('ö','#gt-typer')">ö</button> <button onclick="addLetter('Ö','#gt-typer')">Ö</button> <button onclick="addLetter('ü','#gt-typer')">ü</button> <button onclick="addLetter('Ü','#gt-typer')">Ü</button> <button onclick="addLetter('ß','#gt-typer')">ß</button> </div>
-    </div>
-    <h2>Character table</h2>
-    <hr>
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <table id="characterTable" class="table table-striped">
-                
+        <br>
+        <h2>Character table</h2>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <table id="characterTable" class="table table-striped">
+                    
                     <tr>
                         <td>a</td>
                         <td class='gt-gerFont'>a</td>
@@ -361,26 +424,27 @@
                         <td>z</td>
                         <td class='gt-gerFont'>z</td>
                     </tr>
-                                </table>
-        </div>
-        <div class="col-12 col-md-4">
-            <select id="gt-fontSelect" onchange="changeFont(this.value, '.gt-gerFont');">
-                <option value="" selected="selected" disabled>Select a font</option>
-                <option value=" amptmann">Amptmann</option>
-                <option value="contgen">Contgen</option>
-                <option value="friedolin">Friedolin</option>
-                <option value="greifswalder">Greifswalder</option>
-                <option value="kurrent">Kurrent</option>
-                <option value="leipzig">Leipzig</option>
-                <option value="rudelskopf">Rudelskopf</option>
-                <option value="schwabacher">Schwabacher</option>
-            </select>
-            <select id="gt-caseSelect" onchange="changeCase(this.value, '#characterTable');">
-                <option value="lowercase">Lowercase</option>
-                <option value="uppercase">Uppercase</option>
-            </select>
+                                    </table>
+            </div>
+            <div class="col-12 col-md-4">
+                <select id="gt-fontSelect" onchange="changeFont(this.value, '.gt-gerFont');">
+                    <option value="" selected="selected" disabled>Select a font</option>
+                    <option value=" amptmann">Amptmann</option>
+                    <option value="contgen">Contgen</option>
+                    <option value="friedolin">Friedolin</option>
+                    <option value="greifswalder">Greifswalder</option>
+                    <option value="kurrent">Kurrent</option>
+                    <option value="leipzig">Leipzig</option>
+                    <option value="rudelskopf">Rudelskopf</option>
+                    <option value="schwabacher">Schwabacher</option>
+                </select>
+                <select id="gt-caseSelect" onchange="changeCase(this.value, '#characterTable');">
+                    <option value="lowercase">Lowercase</option>
+                    <option value="uppercase">Uppercase</option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
+    </body>
 
 </html>
